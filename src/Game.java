@@ -21,17 +21,13 @@ public class Game {
 	}
 
 	public void update() {
-		System.out.println("updated in " + getDelta());
 		last = getTime();
 
 	}
 
 	public void paint() {
-		GraphicsLib.setColor(Color.black);
-		GraphicsLib.fillScreen(null);
-		GraphicsLib.setColor(Color.red);
-		GraphicsLib.drawString(Mouse.getPos(), "Mouse Position:" + Mouse.getX()
-				+ ", " + Mouse.getY());
+		GLib.setColor(Color.black);
+		GLib.fillScreen(null);
 		testCont.paint();
 	}
 

@@ -34,7 +34,7 @@ public class Window {
 	}
 
 	private void init() {
-		GraphicsLib.init(size);
+		GLib.init(size);
 		game = new Game(size);
 	}
 
@@ -57,7 +57,7 @@ public class Window {
 	}
 
 	private void paint() {
-		GraphicsLib.clear();
+		GLib.clear();
 		game.paint();
 	}
 
