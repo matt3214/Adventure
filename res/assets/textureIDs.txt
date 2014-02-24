@@ -1,3 +1,1 @@
 0 = blank
-1 = text_inventory
-2 = text_observations

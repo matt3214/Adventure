@@ -1,5 +1,7 @@
 import java.awt.Dimension;
 
+import org.newdawn.slick.Color;
+
 
 public class Container {
 	
@@ -25,7 +27,8 @@ public class Container {
 	public void paint(){
 		GraphicsLib.pop();
 		GraphicsLib.translate((int)position.x, 0, (int)position.y);
-		GraphicsLib.drawRect(0, 0, Strings.textWidth, Strings.textHeight,Game.textureStore.getTexture("text_inventory"));
+		GraphicsLib.setColor(Color.white);
+		GraphicsLib.drawString(new Vec2(0,0),type.text+":");
 		GraphicsLib.push();
 	}
 	

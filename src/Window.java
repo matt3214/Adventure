@@ -1,10 +1,15 @@
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.newdawn.slick.opengl.ImageIOImageData;
 import org.newdawn.slick.opengl.Texture;
 
 public class Window {
@@ -12,10 +17,17 @@ public class Window {
 	Texture test;
 	Game game;
 
-	public Window() throws LWJGLException {
-		Display.setDisplayMode(new DisplayMode(size.width,size.height));
-		Display.setTitle("Platformer");
-//		Display.setFullscreen(true);
+	public Window() throws LWJGLException, IOException {
+		Display.setDisplayMode(new DisplayMode(size.width, size.height));
+		Display.setTitle("Castle Crawler");
+		Display.setIcon(new ByteBuffer[] {
+				new ImageIOImageData().imageToByteBuffer(
+						ImageIO.read(new File("res/textures/icon/small.png")),
+						false, false, null),
+				new ImageIOImageData().imageToByteBuffer(
+						ImageIO.read(new File("res/textures/icon/large.png")),
+						false, false, null) });
+		// Display.setFullscreen(true);
 		Display.create();
 		init();
 		run();
@@ -49,7 +61,7 @@ public class Window {
 		game.paint();
 	}
 
-	public static void main(String[] args) throws LWJGLException {
+	public static void main(String[] args) throws LWJGLException, IOException {
 		new Window();
 	}
 }

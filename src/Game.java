@@ -1,7 +1,7 @@
-import java.awt.Color;
 import java.awt.Dimension;
 
 import org.lwjgl.Sys;
+import org.newdawn.slick.Color;
 
 public class Game {
 	private Dimension size;
@@ -21,13 +21,17 @@ public class Game {
 	}
 
 	public void update() {
+		System.out.println("updated in " + getDelta());
 		last = getTime();
+
 	}
 
 	public void paint() {
-		GraphicsLib.clear();
-		GraphicsLib.setColor(Color.white);
+		GraphicsLib.setColor(Color.black);
 		GraphicsLib.fillScreen(null);
+		GraphicsLib.setColor(Color.red);
+		GraphicsLib.drawString(Mouse.getPos(), "Mouse Position:" + Mouse.getX()
+				+ ", " + Mouse.getY());
 		testCont.paint();
 	}
 
