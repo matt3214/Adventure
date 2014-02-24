@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 
 import org.lwjgl.Sys;
@@ -6,7 +7,7 @@ public class Game {
 	private Dimension size;
 	public static TextureStore textureStore;
 	private static long last;
-	public static Vec2 gravity = new Vec2(0,-9.8);
+	Container testCont;
 
 	public Game(Dimension size) {
 		this.size = size;
@@ -16,6 +17,7 @@ public class Game {
 	private void init() {
 		textureStore = new TextureStore();
 		last = getTime();
+		testCont = new Container(ContainerType.INVENTORY);
 	}
 
 	public void update() {
@@ -23,6 +25,10 @@ public class Game {
 	}
 
 	public void paint() {
+		GraphicsLib.clear();
+		GraphicsLib.setColor(Color.white);
+		GraphicsLib.fillScreen(null);
+		testCont.paint();
 	}
 
 	public static long getDelta() {

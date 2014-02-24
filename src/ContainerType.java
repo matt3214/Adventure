@@ -1,0 +1,3 @@
+public enum ContainerType{
+		INVENTORY,OBSERVATIONS,ACTIONS,MAP,THOUGHTS;
+}

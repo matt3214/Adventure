@@ -36,6 +36,9 @@ public class GraphicsLib {
 	}
 
 	public static void fillScreen(Texture texture) {
+		if(texture == null){
+			texture = Game.textureStore.getTexture(0);
+		}
 		texture.bind();
 		glBegin(GL_QUADS);
 		glTexCoord2d(0, 1);
@@ -97,11 +100,11 @@ public class GraphicsLib {
 		glPopMatrix();
 	}
 
-	public static void translate(double translate_x, int y, int z) {
-		glTranslated(translate_x, y, z);
+	public static void translate(double x, int y, int z) {
+		glTranslated(x, y, z);
 	}
 
-	public static void translateView(double translate_x, int y, int z) {
-		glTranslated(-translate_x, y, z);
+	public static void translateView(double x, int y, int z) {
+		glTranslated(-x, y, z);
 	}
 }
