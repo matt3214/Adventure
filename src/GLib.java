@@ -21,8 +21,8 @@ public class GLib {
 		glMatrixMode(GL_MODELVIEW_MATRIX);
 		size = size_;
 		color = Color.black;
-		font = new TrueTypeFont(new Font("Times New Roman",
-				Font.BOLD, 24), true);
+		font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, 24),
+				true);
 	}
 
 	public static void clear() {
@@ -35,32 +35,16 @@ public class GLib {
 	}
 
 	public static void fillScreen() {
-		glBegin(GL_QUADS);
-		glVertex2d(0, 0);
-		glVertex2d(0 + size.width, 0);
-		glVertex2d(0 + size.width, 0 + size.height);
-		glVertex2d(0, 0 + size.height);
-		glEnd();
+		drawRect(0, 0, size.width, size.height);
 	}
 
 	public static void fillScreen(Texture texture) {
 		if (texture == null) {
 			texture = Game.textureStore.getTexture(0);
 		}
-		texture.bind();
-		glBegin(GL_QUADS);
-		glTexCoord2d(0, 1);
-		glVertex2d(0, 0);
 
-		glTexCoord2d(1, 1);
-		glVertex2d(0 + size.width, 0);
+		drawRect(0, 0, size.width, size.height, texture);
 
-		glTexCoord2d(1, 0);
-		glVertex2d(0 + size.width, 0 + size.height);
-
-		glTexCoord2d(0, 0);
-		glVertex2d(0, 0 + size.height);
-		glEnd();
 	}
 
 	public static void drawRect(int x, int y, int w, int h) {
@@ -87,16 +71,16 @@ public class GLib {
 			Texture texture) {
 		texture.bind();
 		glBegin(GL_QUADS);
-		glTexCoord2d(0, 1);
+		glTexCoord2d(0, 0);
 		glVertex2d(x, y);
 
-		glTexCoord2d(1, 1);
+		glTexCoord2d(1, 0);
 		glVertex2d(x + w, y);
 
-		glTexCoord2d(1, 0);
+		glTexCoord2d(1, 1);
 		glVertex2d(x + w, y + h);
 
-		glTexCoord2d(0, 0);
+		glTexCoord2d(0, 1);
 		glVertex2d(x, y + h);
 		glEnd();
 	}

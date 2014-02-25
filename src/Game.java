@@ -12,6 +12,9 @@ public class Game {
 
 	private Room[][] castle = new Room[10][6];
 
+	private int playerX;
+	private int playerY;
+
 	InventoryContainer inventory;
 	MapContainer map;
 
@@ -29,25 +32,56 @@ public class Game {
 	}
 
 	private void initCastle() {
-		
-		int x = rand.nextInt(castle.length);
-		int y = rand.nextInt(castle[0].length);
-		
+
+		playerX = rand.nextInt(castle.length);
+		playerY = rand.nextInt(castle[0].length);
+
 		for (int i = 0; i < castle.length; i++) {
 			for (int j = 0; j < castle[0].length; j++) {
 				castle[i][j] = new Room();
-				if(i==x&&j==y){
-					castle[i][j].discovered=true;
-					castle[i][j].hasPlayer=true;
+				if (i == playerX && j == playerY) {
+					castle[i][j].discovered = true;
+					castle[i][j].hasPlayer = true;
 				}
 			}
 		}
 
-		
+		for (int i = 0; i < 3; i++) {
+			int x = rand.nextInt(castle.length);
+			int y = rand.nextInt(castle[0].length);
+			if (!castle[x][y].hasPlayer) {
+				castle[x][y].isLocked = true;
+			} else {
+				i--;
+			}
+		}
 
 	}
 
 	public void update() {
+
+		for (int i = 0; i < castle.length; i++) {
+			for (int j = 0; j < castle[0].length; j++) {
+				castle[i][j] = new Room();
+				if (i == playerX && j == playerY) {
+					castle[i][j].discovered = true;
+					if (i != 0) {
+						castle[i - 1][j].discovered = true;
+					}
+					if (i != castle.length - 1) {
+						castle[i + 1][j].discovered = true;
+					}
+					if (j != 0) {
+						castle[i][j - 1].discovered = true;
+					}
+					if (j != castle[0].length - 1) {
+						castle[i][j + 1].discovered = true;
+					}
+
+					castle[i][j].hasPlayer = true;
+				}
+			}
+		}
 
 		map.updateRooms(castle);
 
