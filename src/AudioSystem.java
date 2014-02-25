@@ -3,16 +3,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import sun.audio.*;
+import sun.audio.AudioData;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+import sun.audio.ContinuousAudioDataStream;
 
 public class AudioSystem {
 	AudioPlayer MGP;
 
-	public void AudioSystem(){
-		 MGP = AudioPlayer.player;
+	public void AudioSystem() {
+		MGP = AudioPlayer.player;
 	}
-	
-	
+
 	public void playSound(String location) {
 		AudioStream BGM;
 		AudioData MD;

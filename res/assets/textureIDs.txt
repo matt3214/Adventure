@@ -1,2 +1,8 @@
 0 = blank
 1 = containerBG
+2 = borderHoriz
+3 = borderVert
+4 = empty
+5 = undiscovered
+6 = locked
+7 = player
