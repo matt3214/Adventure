@@ -10,8 +10,7 @@ public class Game {
 	private static long last;
 	public static Random rand = new Random();
 
-	private Room[][] castle = new Room[10][6];
-
+	private static Room[][] castle = new Room[10][6];
 	private int playerX;
 	private int playerY;
 
@@ -35,6 +34,7 @@ public class Game {
 
 		playerX = rand.nextInt(castle.length);
 		playerY = rand.nextInt(castle[0].length);
+		System.out.println(playerX + " " + playerY);
 
 		for (int i = 0; i < castle.length; i++) {
 			for (int j = 0; j < castle[0].length; j++) {
@@ -49,8 +49,9 @@ public class Game {
 		for (int i = 0; i < 3; i++) {
 			int x = rand.nextInt(castle.length);
 			int y = rand.nextInt(castle[0].length);
-			if (!castle[x][y].hasPlayer) {
-				castle[x][y].isLocked = true;
+			if (!castle[x][y].hasPlayer || castle[x][y].locked == true) {
+				castle[x][y].locked = true;
+				castle[x][y].golden = true;
 			} else {
 				i--;
 			}
@@ -62,29 +63,28 @@ public class Game {
 
 		for (int i = 0; i < castle.length; i++) {
 			for (int j = 0; j < castle[0].length; j++) {
-				castle[i][j] = new Room();
 				if (i == playerX && j == playerY) {
-					castle[i][j].discovered = true;
+					castle[playerX][playerY].discovered = true;
 					if (i != 0) {
-						castle[i - 1][j].discovered = true;
+						castle[playerX - 1][playerY].discovered = true;
 					}
 					if (i != castle.length - 1) {
-						castle[i + 1][j].discovered = true;
+						castle[playerX + 1][playerY].discovered = true;
 					}
 					if (j != 0) {
-						castle[i][j - 1].discovered = true;
+						castle[playerX][playerY - 1].discovered = true;
 					}
 					if (j != castle[0].length - 1) {
-						castle[i][j + 1].discovered = true;
+						castle[playerX][playerY + 1].discovered = true;
 					}
 
-					castle[i][j].hasPlayer = true;
+					castle[playerX][playerY].hasPlayer = true;
 				}
 			}
 		}
 
 		map.updateRooms(castle);
-
+		inventory.update();
 		last = getTime();
 
 	}
@@ -111,6 +111,14 @@ public class Game {
 		int delta = (int) (time - last);
 
 		return delta;
+
+	}
+
+	public static Room getRoom(int x, int y) {
+		return castle[x][y];
+	}
+
+	private void playerMove() {
 
 	}
 

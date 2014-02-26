@@ -31,14 +31,17 @@ public class MapContainer extends Container {
 				Room room = castle[i][j];
 				if (!room.discovered) {
 					roomTexture = Game.textureStore.getTexture("undiscovered");
-				} else if (room.discovered) {
+				} else {
 					roomTexture = Game.textureStore.getTexture("empty");
-					if (room.isLocked) {
-						roomTexture = Game.textureStore.getTexture("locked");
+					if (room.golden) {
+						roomTexture = Game.textureStore.getTexture("gold");
 					}
-					//Icon checking
+					// Icon checking
 					if (room.hasPlayer) {
 						iconTexture = Game.textureStore.getTexture("player");
+					}
+					if (room.locked){
+						iconTexture = Game.textureStore.getTexture("locked");
 					}
 
 				}

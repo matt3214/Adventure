@@ -4,5 +4,10 @@
 3 = borderVert
 4 = empty
 5 = undiscovered
-6 = locked
-7 = player
+6 = gold
+7 = locked
+8 = final
+9 = player
+10 = note
+11 = selected
+12 = unselected
