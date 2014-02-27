@@ -19,10 +19,14 @@ public class Container {
 		case INVENTORY:
 			x = Strings.padding;
 			y = 2 * screenSize.height / 3;
-			width = 250;
+			width = ((screenSize.width / 3) - Strings.padding);
 			height = (int) ((screenSize.height / 3) - Strings.padding);
 			break;
 		case ACTIONS:
+			x = screenSize.width / 3 + Strings.padding;
+			y = Strings.padding;
+			width = ((screenSize.width / 3) - Strings.padding*2);
+			height = (2*(screenSize.height / 3) - Strings.padding*2);
 			break;
 		case MAP:
 			x = 2 * screenSize.width / 3;
@@ -31,6 +35,10 @@ public class Container {
 			height = ((screenSize.height / 3) - Strings.padding);
 			break;
 		case OBSERVATIONS:
+			x = Strings.padding;
+			y = Strings.padding;
+			width = ((screenSize.width / 3) - Strings.padding);
+			height =  (2*(screenSize.height / 3) - Strings.padding*2);
 			break;
 		case THOUGHTS:
 			break;
@@ -52,14 +60,15 @@ public class Container {
 		GLib.setColor(Color.black);
 		String text = type.text;
 		GLib.drawString(new Vec2(Strings.padding, 0), text.substring(0, 1)
-				.toUpperCase() + text.substring(1, text.length()) + ":");
+				.toUpperCase() + text.substring(1, text.length()) + ":", false);
 		GLib.setColor(Color.white);
-		
+
 		draw();
 		GLib.pop();
 
 	}
-	public void draw(){}
-	
+
+	public void draw() {
+	}
 
 }

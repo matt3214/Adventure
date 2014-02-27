@@ -1,4 +1,4 @@
 
 public enum ActionType {
-	MOVE,INVENTORY,
+	MOVE,INVENTORY,CRAFT,READ;
 }

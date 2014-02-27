@@ -2,7 +2,7 @@ import java.awt.Rectangle;
 
 
 public class InventoryButton {
-	public boolean selected = false;
+	public boolean hovered = false;
 	public Rectangle hitbox;
 	
 	

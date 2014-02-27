@@ -9,5 +9,6 @@
 8 = final
 9 = player
 10 = note
-11 = selected
-12 = unselected
+11 = hovered
+12 = selected
+13 = unselected
