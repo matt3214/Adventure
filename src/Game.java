@@ -1,4 +1,3 @@
-import static org.lwjgl.opengl.GL11.glTranslated;
 
 import java.awt.Dimension;
 import java.util.Random;
@@ -15,11 +14,12 @@ public class Game {
 	private static Room[][] castle = new Room[10][6];
 	private static int playerX;
 	private static int playerY;
+	public static boolean debug = false;
 
-	InventoryContainer inventory;
-	MapContainer map;
-	ActionContainer actions;
-	ObservationsContainer observations;
+	private static InventoryContainer inventory;
+	private static MapContainer map;
+	private static ActionContainer actions;
+	private static ObservationsContainer observations;
 
 	public Game(Dimension size) {
 		this.size = size;
@@ -62,6 +62,18 @@ public class Game {
 				i--;
 			}
 		}
+		int x = rand.nextInt(castle.length);
+		int y = rand.nextInt(castle[0].length);
+		if (!castle[x][y].hasPlayer && castle[x][y].locked == false) {
+			castle[x][y].escape = true;
+			castle[x][y].crystalLocked = true;
+		}
+		
+		for (int i = 0; i < castle.length; i++) {
+			for (int j = 0; j < castle[0].length; j++) {
+				castle[i][j].generateRoom(castle, i, j);
+			}
+		}
 
 	}
 
@@ -91,13 +103,13 @@ public class Game {
 
 		map.updateRooms(castle);
 		inventory.update();
-		observations.update();
+		observations.update(castle[playerX][playerY]);
 
 		Observable item;
 
 		if (inventory.selectedX != -1 && inventory.selectedY != -1) {
 			item = inventory.getItem(inventory.selectedX, inventory.selectedY);
-		}else{
+		} else {
 			item = observations.getObservation(observations.selected);
 		}
 
@@ -149,8 +161,15 @@ public class Game {
 	}
 
 	public static void movePlayer(int x, int y) {
-		playerX += x;
-		playerY += y;
+		if(playerX<castle.length-1&&playerX>0){
+			playerX += x;
+		}
+		if(playerY<castle[0].length-1&&playerY>0){
+			playerY += y;
+		}
+		observations.selected = -1;
+		inventory.selectedX = -1;
+		inventory.selectedY = -1;
 	}
 
 	public static long getTime() {

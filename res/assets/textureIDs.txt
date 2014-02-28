@@ -12,3 +12,6 @@
 11 = hovered
 12 = selected
 13 = unselected
+14 = action_unsel
+15 = action_hov
+16 = crystalLocked

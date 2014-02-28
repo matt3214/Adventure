@@ -37,6 +37,7 @@ public class GLib {
 	private static Color color;
 	private static UnicodeFont font;
 	private static UnicodeFont hoverFont;
+	private static UnicodeFont descriptorFont;
 
 	@SuppressWarnings("unchecked")
 	public static void init(Dimension size_) {
@@ -54,9 +55,13 @@ public class GLib {
 		hoverFont = new UnicodeFont(new Font("Times New Roman", Font.BOLD, 16));
 		hoverFont.getEffects().add(new ColorEffect(java.awt.Color.white));
 		hoverFont.addAsciiGlyphs();
+		descriptorFont = new UnicodeFont(new Font("Times New Roman", Font.BOLD, 18));
+		descriptorFont.getEffects().add(new ColorEffect(java.awt.Color.white));
+		descriptorFont.addAsciiGlyphs();
 		try {
 			hoverFont.loadGlyphs();
 			font.loadGlyphs();
+			descriptorFont.loadGlyphs();
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -142,13 +147,13 @@ public class GLib {
 		glTranslated(x, y, z);
 	}
 
-	public static void drawString(Vec2 position, String text, boolean small) {
+	public static void drawString(Vec2 position, String text, int textType) {
 		glPushMatrix();
 		glDisable(GL_LIGHTING);
 		
-		if (!small) {
+		if (textType == Strings.CONTAINERTEXT) {
 			font.drawString((float) position.x, (float) position.y, text, color);
-		} else {
+		} else if(textType == Strings.HOVERTEXT){
 			position = position.add(new Vec2(2,-13));
 			Color cache = getColor();
 			setColor(Color.white);
@@ -157,6 +162,8 @@ public class GLib {
 			hoverFont.drawString((float) position.x, (float) position.y, text,
 					cache);
 			setColor(cache);
+		}else if(textType == Strings.DESCRIPTORTEXT){
+			descriptorFont.drawString((float) position.x, (float) position.y, text, color);
 		}
 		glPopMatrix();
 	}

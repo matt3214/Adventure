@@ -11,7 +11,7 @@ public class InventoryItem extends Observable {
 
 	public void paint() {
 		GLib.drawRect(0, 0, 16, 16, icon);
-		GLib.drawString(new Vec2(0, 0), displayName, false);
+		GLib.drawString(new Vec2(0, 0), displayName, 0);
 	}
 
 }

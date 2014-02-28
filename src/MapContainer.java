@@ -29,12 +29,15 @@ public class MapContainer extends Container {
 				iconTexture = null;
 
 				Room room = castle[i][j];
-				if (!room.discovered) {
+				if (!room.discovered&&!Game.debug) {
 					roomTexture = Game.textureStore.getTexture("undiscovered");
 				} else {
 					roomTexture = Game.textureStore.getTexture("empty");
 					if (room.golden) {
 						roomTexture = Game.textureStore.getTexture("gold");
+					}
+					if (room.escape) {
+						roomTexture = Game.textureStore.getTexture("final");
 					}
 					// Icon checking
 					if (room.hasPlayer) {
@@ -42,6 +45,9 @@ public class MapContainer extends Container {
 					}
 					if (room.locked){
 						iconTexture = Game.textureStore.getTexture("locked");
+					}
+					if (room.crystalLocked) {
+						iconTexture = Game.textureStore.getTexture("crystalLocked");
 					}
 
 				}

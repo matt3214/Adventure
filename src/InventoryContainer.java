@@ -55,6 +55,11 @@ public class InventoryContainer extends Container {
 				new Vec2(size.width / 9 + Strings.padding, 2
 						* GLib.screenDimension().getHeight() / 3 + size.height
 						/ 7 + Strings.padding));
+		if(org.lwjgl.input.Mouse.isButtonDown(0) && (mousePos.y<-padding*2)){
+			selectedX = -1;
+			selectedY = -1;
+			
+		}
 		for (int i = 0; i < items.length; i++) {
 			for (int j = 0; j < items[0].length; j++) {
 
@@ -144,7 +149,7 @@ public class InventoryContainer extends Container {
 
 		public void draw() {
 			GLib.setColor(Color.black);
-			GLib.drawString(location, message, small);
+			GLib.drawString(location, message, 1);
 			GLib.setColor(Color.white);
 		}
 	}

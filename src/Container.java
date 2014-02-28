@@ -60,7 +60,7 @@ public class Container {
 		GLib.setColor(Color.black);
 		String text = type.text;
 		GLib.drawString(new Vec2(Strings.padding, 0), text.substring(0, 1)
-				.toUpperCase() + text.substring(1, text.length()) + ":", false);
+				.toUpperCase() + text.substring(1, text.length()) + ":", 1);
 		GLib.setColor(Color.white);
 
 		draw();
