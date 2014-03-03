@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.opengl.ImageIOImageData;
@@ -46,12 +47,12 @@ public class Window {
 	private void init() throws LWJGLException, IOException {
 
 		GLib.init(size);
-		Cursor c = new Cursor(16, 16, 0, 15, 1,
-				loadCursor("res/mouse/cursor.png"),
-				IntBuffer.wrap(new int[] { 0 }));
-		
-		org.lwjgl.input.Mouse.setNativeCursor(c);
-		org.lwjgl.input.Mouse.updateCursor();
+		// Cursor c = new Cursor(16, 16, 0, 15, 1,
+		// loadCursor("res/mouse/cursor.png"),
+		// IntBuffer.wrap(new int[] { 0 }));
+		//
+		// Mouse.setNativeCursor(c);
+		// Mouse.updateCursor();
 
 		game = new Game(size);
 	}

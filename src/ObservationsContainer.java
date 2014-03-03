@@ -83,7 +83,7 @@ public class ObservationsContainer extends Container {
 
 	public Observable getObservation(int selected) {
 		if (selected != -1) {
-			return playerRoom.observations.get(0);
+			return playerRoom.observations.get(selected);
 		} else {
 			return null;
 		}

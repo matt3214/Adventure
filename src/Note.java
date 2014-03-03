@@ -8,13 +8,7 @@ public class Note extends InventoryItem {
 	}
 
 	private void init() {
-		actions.add(new ReadAction() {
-
-			public void performAction() {
-				// TODO Auto-generated method stub
-				
-			}
-
-		});
+		actions.add(new ReadAction(message));
 	}
+	
 }

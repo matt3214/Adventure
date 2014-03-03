@@ -36,6 +36,7 @@ public class ActionContainer extends Container {
 	Vec2 mousePos;
 
 	public void update(Observable object) {
+
 		if (object != null) {
 			Arrays.fill(actions, null);
 			Action[] temp = object.actions.toArray(new Action[0]);
@@ -47,7 +48,7 @@ public class ActionContainer extends Container {
 				}
 
 			}
-		}else{
+		} else {
 			Arrays.fill(actions, null);
 		}
 
@@ -61,7 +62,41 @@ public class ActionContainer extends Container {
 				buttons[i].hovered = true;
 				if (org.lwjgl.input.Mouse.isButtonDown(0)) {
 					if (actions[i] != null) {
-						actions[i].performAction();
+
+						if (actions[i] instanceof ReadAction) {
+							ReadAction action = (ReadAction) actions[i];
+							action.performAction();
+						}
+						if (actions[i] instanceof MoveAction) {
+							MoveAction action = (MoveAction) actions[i];
+							action.performAction();
+						}
+						if (actions[i] instanceof CraftAction) {
+							CraftAction action = (CraftAction) actions[i];
+							action.performAction();
+						}
+						if (actions[i] instanceof UnlockAction) {
+							UnlockAction action = (UnlockAction) actions[i];
+							action.performAction();
+						}
+						if (actions[i] instanceof InventoryAction
+								&& !(actions[i] instanceof InspectAction)) {
+							InventoryAction action = (InventoryAction) actions[i];
+							action.performAction();
+						}
+						if (actions[i] instanceof EatAction) {
+							EatAction action = (EatAction) actions[i];
+							action.performAction();
+						}
+						if (actions[i] instanceof InspectAction) {
+							InspectAction action = (InspectAction) actions[i];
+							action.performAction();
+						}
+						if (actions[i] instanceof EscapeAction) {
+							EscapeAction action = (EscapeAction) actions[i];
+							action.performAction();
+						}
+
 					}
 
 				}
@@ -84,14 +119,13 @@ public class ActionContainer extends Container {
 			InventoryButton button = buttons[i];
 			if (actions[i] != null) {
 				stringsToDraw.add(new StringOnScreen(new Vec2(padding * 5, i
-						* (buttonHeight + padding) + padding), actions[i]
-						.actionText));
+						* (buttonHeight + Strings.padding) + padding),
+						actions[i].getActionText()));
 
 			}
 			if (button.hovered) {
 				buttonText = Game.textureStore.getTexture("hovered");
 			}
-			
 
 			GLib.drawRect(button.hitbox.x, button.hitbox.y,
 					button.hitbox.width, button.hitbox.height, buttonText);
@@ -104,7 +138,10 @@ public class ActionContainer extends Container {
 
 	private void drawStrings() {
 		for (int i = 0; i < stringsToDraw.size(); i++) {
-			stringsToDraw.get(i).draw();
+			if (stringsToDraw.get(i).message != null) {
+				stringsToDraw.get(i).draw();
+
+			}
 		}
 	}
 

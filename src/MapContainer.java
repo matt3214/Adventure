@@ -5,13 +5,13 @@ import org.newdawn.slick.opengl.Texture;
 public class MapContainer extends Container {
 
 	public Room[][] castle;
-	Dimension roomSize = new Dimension(33, 33);
+	Dimension roomSize;
 
 	public MapContainer(Room[][] castle) {
 		super(ContainerType.MAP);
 
 		this.castle = castle;
-
+		roomSize =  new Dimension((4*size.width/5)/Strings.width ,(3*size.height/4)/Strings.height);
 	}
 
 	public void updateRooms(Room[][] castle) {

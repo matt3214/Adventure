@@ -30,11 +30,39 @@ public class Room {
 		if (y > 0) {
 			observations.add(doors[0]);
 		}
-		if (y < castle[0].length) {
+		if (y < castle[0].length - 1) {
 			observations.add(doors[2]);
 		}
 		
+		if(locked){
+			observations.add(new CrystalKey());
+		}
+		if(escape){
+			observations.add(new Escape());
+		}
+		if (hasKey) {
+			observations.add(new HiddenObject(new ItemKey()));
+		}
+		if(Game.rand.nextBoolean() && Game.rand.nextBoolean() && Game.rand.nextBoolean()){
+			observations.add(new HiddenObject(new ItemFood()));
+		}
 
+	}
+
+	public boolean isMovable() {
+		if (locked || crystalLocked) {
+			return false;
+		}
+		return true;
+	}
+
+	public void removeItem(String item) {
+		for (int i = 0; i < observations.size(); i++) {
+			if (observations.get(i).name.equals(item)) {
+				observations.remove(i);
+				return;
+			}
+		}
 	}
 
 }

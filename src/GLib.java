@@ -1,31 +1,8 @@
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_LIGHTING;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW_MATRIX;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION_MATRIX;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glColor4d;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glOrtho;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glTexCoord2d;
-import static org.lwjgl.opengl.GL11.glTranslated;
-import static org.lwjgl.opengl.GL11.glVertex2d;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Dimension;
 import java.awt.Font;
 
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -55,7 +32,8 @@ public class GLib {
 		hoverFont = new UnicodeFont(new Font("Times New Roman", Font.BOLD, 16));
 		hoverFont.getEffects().add(new ColorEffect(java.awt.Color.white));
 		hoverFont.addAsciiGlyphs();
-		descriptorFont = new UnicodeFont(new Font("Times New Roman", Font.BOLD, 18));
+		descriptorFont = new UnicodeFont(new Font("Times New Roman", Font.BOLD,
+				18));
 		descriptorFont.getEffects().add(new ColorEffect(java.awt.Color.white));
 		descriptorFont.addAsciiGlyphs();
 		try {
@@ -65,10 +43,6 @@ public class GLib {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void switchText() {
-
 	}
 
 	public static void clear() {
@@ -150,20 +124,22 @@ public class GLib {
 	public static void drawString(Vec2 position, String text, int textType) {
 		glPushMatrix();
 		glDisable(GL_LIGHTING);
-		
+
 		if (textType == Strings.CONTAINERTEXT) {
 			font.drawString((float) position.x, (float) position.y, text, color);
-		} else if(textType == Strings.HOVERTEXT){
-			position = position.add(new Vec2(2,-13));
+		} else if (textType == Strings.HOVERTEXT) {
+			position = position.add(new Vec2(2, -13));
 			Color cache = getColor();
 			setColor(Color.white);
 			drawRect(position.x, position.y, hoverFont.getWidth(text),
-					hoverFont.getHeight(text),Game.textureStore.getTexture("blank"));
+					hoverFont.getHeight(text),
+					Game.textureStore.getTexture("blank"));
 			hoverFont.drawString((float) position.x, (float) position.y, text,
 					cache);
 			setColor(cache);
-		}else if(textType == Strings.DESCRIPTORTEXT){
-			descriptorFont.drawString((float) position.x, (float) position.y, text, color);
+		} else if (textType == Strings.DESCRIPTORTEXT) {
+			descriptorFont.drawString((float) position.x, (float) position.y,
+					text, color);
 		}
 		glPopMatrix();
 	}

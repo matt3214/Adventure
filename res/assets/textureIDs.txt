@@ -15,3 +15,9 @@
 14 = action_unsel
 15 = action_hov
 16 = crystalLocked
+17 = key
+18 = thoughtsBG
+19 = health
+20 = hunger
+21 = crystal Key
+22 = food

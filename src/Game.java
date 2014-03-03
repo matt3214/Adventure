@@ -1,8 +1,11 @@
-
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import org.lwjgl.Sys;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 
 public class Game {
@@ -11,7 +14,7 @@ public class Game {
 	private static long last;
 	public static Random rand = new Random();
 
-	private static Room[][] castle = new Room[10][6];
+	private static Room[][] castle = new Room[Strings.width][Strings.height];
 	private static int playerX;
 	private static int playerY;
 	public static boolean debug = false;
@@ -20,6 +23,11 @@ public class Game {
 	private static MapContainer map;
 	private static ActionContainer actions;
 	private static ObservationsContainer observations;
+	private static ThoughtContainer thoughts;
+	private static StatusContainer status;
+
+	public static int playerHealth = 100;
+	public static int playerHunger = 100;
 
 	public Game(Dimension size) {
 		this.size = size;
@@ -35,6 +43,8 @@ public class Game {
 		map = new MapContainer(castle);
 		actions = new ActionContainer();
 		observations = new ObservationsContainer(castle[playerX][playerY]);
+		thoughts = new ThoughtContainer();
+		status = new StatusContainer();
 	}
 
 	private void initCastle() {
@@ -55,20 +65,36 @@ public class Game {
 		for (int i = 0; i < 3; i++) {
 			int x = rand.nextInt(castle.length);
 			int y = rand.nextInt(castle[0].length);
-			if (!castle[x][y].hasPlayer || castle[x][y].locked == true) {
+			if (!castle[x][y].hasPlayer && castle[x][y].locked == false) {
 				castle[x][y].locked = true;
 				castle[x][y].golden = true;
 			} else {
 				i--;
 			}
 		}
-		int x = rand.nextInt(castle.length);
-		int y = rand.nextInt(castle[0].length);
-		if (!castle[x][y].hasPlayer && castle[x][y].locked == false) {
-			castle[x][y].escape = true;
-			castle[x][y].crystalLocked = true;
+
+		for (int i = 0; i < 1; i++) {
+
+			int x = rand.nextInt(castle.length);
+			int y = rand.nextInt(castle[0].length);
+			if (castle[x][y].hasPlayer || castle[x][y].locked == true) {
+				i--;
+			} else {
+				castle[x][y].escape = true;
+				castle[x][y].crystalLocked = true;
+			}
 		}
-		
+		for (int i = 0; i < 3; i++) {
+			int x = rand.nextInt(castle.length);
+			int y = rand.nextInt(castle[0].length);
+			if (!castle[x][y].hasPlayer && castle[x][y].locked == false
+					&& castle[x][y].crystalLocked == false) {
+				castle[x][y].hasKey = true;
+
+			} else {
+				i--;
+			}
+		}
 		for (int i = 0; i < castle.length; i++) {
 			for (int j = 0; j < castle[0].length; j++) {
 				castle[i][j].generateRoom(castle, i, j);
@@ -97,14 +123,11 @@ public class Game {
 					}
 
 					castle[playerX][playerY].hasPlayer = true;
+				} else {
+					castle[i][j].hasPlayer = false;
 				}
 			}
 		}
-
-		map.updateRooms(castle);
-		inventory.update();
-		observations.update(castle[playerX][playerY]);
-
 		Observable item;
 
 		if (inventory.selectedX != -1 && inventory.selectedY != -1) {
@@ -113,7 +136,16 @@ public class Game {
 			item = observations.getObservation(observations.selected);
 		}
 
+		map.updateRooms(castle);
 		actions.update(item);
+
+		inventory.update();
+		observations.update(castle[playerX][playerY]);
+
+		thoughts.update();
+
+		status.update();
+
 		last = getTime();
 
 	}
@@ -145,6 +177,9 @@ public class Game {
 		map.paint();
 		actions.paint();
 		observations.paint();
+		thoughts.paint();
+		status.paint();
+
 		GLib.pop();
 	}
 
@@ -160,20 +195,108 @@ public class Game {
 		return castle[x][y];
 	}
 
+	public static Room getPlayerRoomPlus(int x, int y) {
+
+		if (withinRange(playerX + x, castle.length - 1, 0)) {
+			return castle[playerX + x][playerY];
+		}
+		if (withinRange(playerY + y, castle[0].length - 1, 0)) {
+			return castle[playerX][playerY + y];
+		}
+		return null;
+	}
+
+	public static boolean withinRange(int value, int max, int min) {
+		return (value >= min && value <= max);
+	}
+
 	public static void movePlayer(int x, int y) {
-		if(playerX<castle.length-1&&playerX>0){
-			playerX += x;
+		if (x != 0) {
+
+			if ((playerX == castle.length - 1 || x < 0)
+					|| (playerX == 0 || x > 0)) {
+				if (castle[playerX + x][playerY].isMovable()) {
+					playerX += x;
+				} else {
+					printThought("You need a key to unlock that door!");
+				}
+			}
 		}
-		if(playerY<castle[0].length-1&&playerY>0){
-			playerY += y;
+
+		if (y != 0) {
+			if ((playerY == castle[0].length - 1 || y < 0)
+					|| (playerY == 0 || y > 0)) {
+				if (castle[playerX][playerY + y].isMovable()) {
+					playerY += y;
+				} else {
+					printThought("You need a key to unlock that door!");
+				}
+			}
+
 		}
+
 		observations.selected = -1;
 		inventory.selectedX = -1;
 		inventory.selectedY = -1;
+		playerHunger -= 1;
+		updateHealth();
+	}
+
+	public static int map(int x, int in_min, int in_max, int out_min,
+			int out_max) {
+		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	}
+
+	public static int constrain(int min, int max, int value) {
+		if (value <= min) {
+			value = min;
+		} else if (value >= max) {
+			value = max;
+		}
+		return value;
+	}
+
+	private static void updateHealth() {
+		if (playerHunger >= 0 && playerHunger < 20) {
+			playerHealth -= 5;
+		} else if (playerHunger >= 20 && playerHunger < 40) {
+			playerHealth -= 2;
+		} else if (playerHunger >= 40 && playerHunger < 60) {
+			playerHealth += 0;
+		} else if (playerHunger >= 60 && playerHunger < 80) {
+			playerHealth += 2;
+		} else if (playerHunger >= 80 && playerHunger <= 100) {
+			playerHealth += 5;
+		}
+		playerHealth = constrain(0, 100, playerHealth);
+
 	}
 
 	public static long getTime() {
 		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+	}
+
+	public static void printThought(String actionText) {
+		thoughts.printMessage(actionText);
+	}
+
+	public static void giveItem(InventoryItem itemToAdd) {
+		inventory.giveItem(itemToAdd);
+	}
+
+	public static void removeItem(String item) {
+		inventory.removeItem(item);
+	}
+
+	public static Room getPlayerRoom() {
+		return castle[playerX][playerY];
+	}
+
+	public static void victory() {
+		Display.destroy();
+		JOptionPane.showMessageDialog(null,
+				"Congratulations!!!\nYou've Won!!!!");
+		System.exit(0);
 	}
 
 }

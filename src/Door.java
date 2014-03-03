@@ -1,7 +1,6 @@
-
 public class Door extends Observation {
 
-	private int direction;
+	public int direction;
 
 	public Door(int direction) {
 		super((direction == 0 ? "north" : direction == 1 ? "east"
@@ -11,18 +10,7 @@ public class Door extends Observation {
 	}
 
 	private void init() {
-		
-		
-		actions.add(new MoveAction() {
-
-			public void performAction() {
-				int[] xs = { 0, 1, 0, -1 };
-				int[] ys = { 1, 0, -1, 0 };
-				Game.movePlayer(xs[direction], ys[direction]);
-				
-			}
-
-		});
+		actions.add(new MoveAction(direction));
 
 	}
 

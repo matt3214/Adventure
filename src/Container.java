@@ -25,8 +25,8 @@ public class Container {
 		case ACTIONS:
 			x = screenSize.width / 3 + Strings.padding;
 			y = Strings.padding;
-			width = ((screenSize.width / 3) - Strings.padding*2);
-			height = (2*(screenSize.height / 3) - Strings.padding*2);
+			width = ((screenSize.width / 3) - Strings.padding * 2);
+			height = (2 * (screenSize.height / 3) - Strings.padding * 2);
 			break;
 		case MAP:
 			x = 2 * screenSize.width / 3;
@@ -38,9 +38,19 @@ public class Container {
 			x = Strings.padding;
 			y = Strings.padding;
 			width = ((screenSize.width / 3) - Strings.padding);
-			height =  (2*(screenSize.height / 3) - Strings.padding*2);
+			height = (2 * (screenSize.height / 3) - Strings.padding * 2);
 			break;
 		case THOUGHTS:
+			x = screenSize.width / 3 + Strings.padding;
+			y = 2 * screenSize.height / 3;
+			width = ((screenSize.width / 3) - Strings.padding * 2);
+			height = (int) ((screenSize.height / 3) - Strings.padding);
+			break;
+		case STATUS:
+			x = 2 * screenSize.width / 3;
+			y = Strings.padding;
+			width = ((screenSize.width / 3) - Strings.padding);
+			height = (int) (2*(screenSize.height / 3) - Strings.padding*2);
 			break;
 		default:
 			break;
@@ -68,7 +78,8 @@ public class Container {
 
 	}
 
-	public void draw() {
+	protected void draw() {
+		
 	}
 
 }

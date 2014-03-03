@@ -22,8 +22,8 @@ public class InventoryContainer extends Container {
 	public void giveItem(InventoryItem item) {
 		for (int i = 0; i < items[0].length; i++) {
 			for (int j = 0; j < items.length; j++) {
-				if (items[i][j] == null) {
-					items[i][j] = item;
+				if (items[j][i] == null) {
+					items[j][i] = item;
 					return;
 				}
 			}
@@ -151,6 +151,19 @@ public class InventoryContainer extends Container {
 			GLib.setColor(Color.black);
 			GLib.drawString(location, message, 1);
 			GLib.setColor(Color.white);
+		}
+	}
+
+	public void removeItem(String name) {
+		for (int i = 0; i < items.length; i++) {
+			for (int j = 0; j < items[0].length; j++) {
+				if(items[i][j]!=null){
+				if(items[i][j].name.equals(name)){
+					items[i][j] = null;
+					return;
+				}
+				}
+			}
 		}
 	}
 }
